@@ -1,0 +1,111 @@
+buildscript {
+    ext {
+        allureVersion = "2.23.0"
+    }
+}
+
+plugins {
+    id 'java'
+    id 'jacoco'
+
+    id 'org.springframework.boot' version '3.0.5'
+    id 'io.spring.dependency-management' version '1.1.0'
+
+    id "com.adarshr.test-logger" version "3.2.0"
+
+    // Use Allure for generating test reports https://github.com/allure-framework/allure-gradle
+    id "io.qameta.allure" version "2.11.2" // when using 2.8.1-->it works
+}
+
+group = 'com.allure_issue'
+version = '0.0.1'
+sourceCompatibility = '17'
+
+repositories {
+    mavenLocal()
+    mavenCentral {
+        content {
+            excludeModule("javax.media", "jai_core")
+        }
+    }
+
+}
+
+dependencies {
+
+    // Spring Boot
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+    // Spring boot testing
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    // Mockito inline
+    testImplementation 'org.mockito:mockito-inline:4.8.1'
+
+    testImplementation("io.qameta.allure:allure-java-commons:$allureVersion")
+
+}
+
+allure {
+    version = allureVersion
+    useJUnit5 {
+        version = allureVersion
+    }
+}
+
+jacoco {
+    toolVersion = "0.8.8" //if using 0.8.8, it works
+}
+
+tasks.withType(Test).configureEach {
+    useJUnitPlatform() {
+    }
+}
+
+testlogger {
+
+    // pick a theme - mocha, standard, plain, mocha-parallel, standard-parallel or plain-parallel
+    theme 'mocha'
+
+    // set to false to disable detailed failure logs
+    showExceptions true
+
+    // set to false to hide stack traces
+    showStackTraces true
+
+    // set to true to remove any filtering applied to stack traces
+    showFullStackTraces true
+
+    // set to false to hide exception causes
+    showCauses true
+
+    // set threshold in milliseconds to highlight slow tests
+    slowThreshold 300000
+
+    // displays a breakdown of passes, failures and skips along with total duration
+    showSummary true
+
+    // set to true to see simple class names
+    showSimpleNames true
+
+    // set to false to hide passed tests
+    showPassed true
+
+    // set to false to hide skipped tests
+    showSkipped false
+
+    // set to false to hide failed tests
+    showFailed true
+
+    // enable to see standard out and error streams inline with the test results
+    showStandardStreams false
+
+    // set to false to hide passed standard out and error streams
+    showPassedStandardStreams true
+
+    // set to false to hide skipped standard out and error streams
+    showSkippedStandardStreams true
+
+    // set to false to hide failed standard out and error streams
+    showFailedStandardStreams true
+}
