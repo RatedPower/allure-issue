@@ -54,7 +54,7 @@ allure {
 }
 
 jacoco {
-    toolVersion = "0.8.8" //if using 0.8.8, it works
+    toolVersion = "0.8.10" //if using 0.8.8, it works
 }
 
 tasks.withType(Test).configureEach {
